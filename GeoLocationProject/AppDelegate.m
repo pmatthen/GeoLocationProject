@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <FlickrKit.h>
 
 @interface AppDelegate ()
 
@@ -14,9 +15,21 @@
 
 @implementation AppDelegate
 
+- (BOOL) application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    NSString *scheme = [url scheme];
+    if([@"flickrkitdemo" isEqualToString:scheme]) {
+        // I don't recommend doing it like this, it's just a demo... I use an authentication
+        // controller singleton object in my projects
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UserAuthCallbackNotification" object:url userInfo:nil];
+    }
+    return YES;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    [[FlickrKit sharedFlickrKit] initializeWithAPIKey:@"c52de95b3ea162e5e8ce9e3bbc267ee3" sharedSecret:@"7ba229004c917fb2"];
+    
     return YES;
 }
 
